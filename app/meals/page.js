@@ -1,12 +1,21 @@
+import { Suspense } from "react";
 import Link from "next/link";
 
 import classes from "./page.module.css";
 import MealsGrid from "@/components/meals/meals-grid";
 import { getMeals } from "@/lib/meals";
 
-export default async function MealsPage() {
+// outsourcing the data fetching into separate component
+// to leverage suspense for loading state
+// NextJs embraces React Suspense Component and makes sure that whenever we have a component like this one here
+// that performs some data fetching and returns such a promise, that such components will triger Suspense to show the fallback until the promise is resolved
+async function Meals() {
   const meals = await getMeals();
 
+  return <MealsGrid meals={meals} />;
+}
+
+export default function MealsPage() {
   return (
     <>
       <header className={classes.header}>
@@ -22,7 +31,11 @@ export default async function MealsPage() {
         </p>
       </header>
       <main className={classes.main}>
-        <MealsGrid meals={meals} />
+        <Suspense
+          fallback={<p className={classes.loading}>Fetching meals...</p>}
+        >
+          <Meals />
+        </Suspense>
       </main>
     </>
   );

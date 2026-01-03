@@ -1,10 +1,15 @@
 import Image from "next/image";
+import { notFound } from "next/navigation";
 
 import { getMealBySlug } from "@/lib/meals";
 import classes from "./page.module.css";
 
 export default function MealDetailsPage({ params }) {
   const meal = getMealBySlug(params.mealSlug);
+
+  if (!meal) {
+    notFound(); // will show the closest 404.js page
+  }
 
   meal.instructions = meal.instructions.replace(/\n/g, "<br />");
 

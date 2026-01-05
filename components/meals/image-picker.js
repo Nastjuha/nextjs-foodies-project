@@ -42,7 +42,7 @@ export default function ImagePicker({ label, name }) {
               alt="The image selected by the user."
               fill
             />
-          ) }
+          )}
         </div>
         <input
           className={classes.input}
@@ -52,6 +52,7 @@ export default function ImagePicker({ label, name }) {
           name={name}
           ref={imageInput}
           onChange={handleImageChange}
+          required
         />
         <button
           className={classes.button}
